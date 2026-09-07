@@ -14,6 +14,7 @@ import { showcase, subsidiaries, sectorPanels, type Locale, t } from "@/lib/data
 import { getTunnelImages } from "@/lib/tunnel-images";
 
 const HERO_SHOWREEL = "/hero/VIDEO PAGE D'ACCEUIL RAMOS GROUP.mp4";
+const HERO_SHOWREEL_WEB = "/hero/VIDEO PAGE D'ACCEUIL RAMOS GROUP.web.mp4";
 const FALLBACK_LOGO = "/logo/LOGO RAMOS GROUP HD.png";
 
 export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
@@ -26,7 +27,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       {/* ── HERO ── */}
       <section className="home-hero" aria-label={fr ? "Ramos Group" : "Ramos Group"}>
         <h1 className="sr-only">Ramos Group</h1>
-        <HeroVideo src={HERO_SHOWREEL} locale={locale} />
+        <HeroVideo src={HERO_SHOWREEL} srcWeb={HERO_SHOWREEL_WEB} locale={locale} priority />
         <div className="hero-shade" aria-hidden="true" />
         <HeroTechFrame />
       </section>
@@ -41,7 +42,15 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             <p className="section-label">{fr ? "Nos métiers" : "Our businesses"}</p>
           </Reveal>
           <Reveal delay={80}>
-            <h2>{fr ? "Six filiales, une ambition commune." : "Six subsidiaries, one shared ambition."}</h2>
+            <h2>
+              {locale === "de"
+                ? "Tochtergesellschaften, ein gemeinsamer Anspruch."
+                : locale === "it"
+                  ? "Filiali, un'ambizione comune."
+                  : fr
+                    ? "Nos filiales, une ambition commune."
+                    : "Our subsidiaries, one shared ambition."}
+            </h2>
           </Reveal>
         </div>
 
@@ -78,6 +87,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             cardBackground: item.logoBg,
             globeColor: item.logoGlow || item.accent,
             logoInvert: item.logoInvert,
+            logoPadPct: item.slug === "cargo" ? 4 : item.logoPad ? Math.round((item.logoPad / 400) * 100) : undefined,
           }))}
         />
       </section>

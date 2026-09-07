@@ -15,7 +15,15 @@ export default async function Subsidiaries({ params }: { params: Promise<{ local
           <p className="eyebrow">{fr ? "L'écosystème Ramos" : "The Ramos ecosystem"}</p>
         </Reveal>
         <Reveal delay={150}>
-          <h1>{fr ? "Six filiales. Une seule direction." : "Six subsidiaries. One direction."}</h1>
+          <h1>
+            {locale === "de"
+              ? "Ein Ökosystem. Eine Richtung."
+              : locale === "it"
+                ? "Un ecosistema. Una sola direzione."
+                : fr
+                  ? "Un écosystème. Une seule direction."
+                  : "One ecosystem. One direction."}
+          </h1>
         </Reveal>
         <Reveal delay={300}>
           <p>
@@ -49,7 +57,8 @@ export default async function Subsidiaries({ params }: { params: Promise<{ local
             alt: item.name,
             caption: item.name,
             href: `/${locale}/filiales/${item.slug}`,
-            buttonLabel: fr ? "Découvrir" : "Learn more",
+            buttonLabel:
+              locale === "de" ? "Entdecken" : locale === "it" ? "Scopri" : fr ? "Découvrir" : "Learn more",
             background: item.logoBg || "#140F1F",
             invert: item.logoInvert,
           }))}
@@ -69,11 +78,11 @@ export default async function Subsidiaries({ params }: { params: Promise<{ local
           edgeStrength={14}
           background="transparent"
           labelColor="rgba(244, 238, 255, 0.78)"
-          showCounter
+          showCounter={false}
           showCardButton
           hint={fr ? "Scroll / Glisser" : "Scroll / Drag"}
           imageFit="contain"
-          imagePadding={44}
+          imagePadding={36}
         />
       </section>
     </>

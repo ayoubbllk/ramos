@@ -1,17 +1,17 @@
-import type { Locale } from "@/lib/data";
+import { pickLocalized, type Locale } from "@/lib/data";
 
 export type BlogPost = {
   slug: string;
   images: string[];
   dateIso: string;
-  dateCard: { fr: string; en: string };
-  dateFull: { fr: string; en: string };
+  dateCard: { fr: string; en: string; de?: string; it?: string };
+  dateFull: { fr: string; en: string; de?: string; it?: string };
   author: string;
-  tag: { fr: string; en: string };
-  title: { fr: string; en: string };
-  excerpt: { fr: string; en: string };
-  body: { fr: string[]; en: string[] };
-  footnotes?: { fr: string; en: string };
+  tag: { fr: string; en: string; de?: string; it?: string };
+  title: { fr: string; en: string; de?: string; it?: string };
+  excerpt: { fr: string; en: string; de?: string; it?: string };
+  body: { fr: string[]; en: string[]; de?: string[]; it?: string[] };
+  footnotes?: { fr: string; en: string; de?: string; it?: string };
 };
 
 export const blogPosts: BlogPost[] = [
@@ -201,9 +201,29 @@ export function getBlogPost(slug: string) {
 }
 
 export function blogTitle(post: BlogPost, locale: Locale) {
-  return post.title[locale];
+  return pickLocalized(post.title, locale);
 }
 
-export function blogBody(post: BlogPost, locale: Locale) {
-  return post.body[locale];
+export function blogBody(post: BlogPost, locale: Locale): string[] {
+  return post.body[locale] || post.body.en || post.body.fr || [];
+}
+
+export function blogExcerpt(post: BlogPost, locale: Locale) {
+  return pickLocalized(post.excerpt, locale);
+}
+
+export function blogTag(post: BlogPost, locale: Locale) {
+  return pickLocalized(post.tag, locale);
+}
+
+export function blogDateCard(post: BlogPost, locale: Locale) {
+  return pickLocalized(post.dateCard, locale);
+}
+
+export function blogDateFull(post: BlogPost, locale: Locale) {
+  return pickLocalized(post.dateFull, locale);
+}
+
+export function blogFootnotes(post: BlogPost, locale: Locale) {
+  return post.footnotes ? pickLocalized(post.footnotes, locale) : "";
 }

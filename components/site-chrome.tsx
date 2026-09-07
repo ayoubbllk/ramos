@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Globe } from "lucide-react";
+import { Globe, ChevronDown } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   startTransition,
@@ -11,9 +11,25 @@ import {
   useRef,
   useState,
 } from "react";
-import type { Locale } from "@/lib/data";
+import { localeMeta, localePath, type Locale } from "@/lib/data";
+import { subsidiaries } from "@/lib/data";
 
-const labels = {
+const labels: Record<
+  Locale,
+  {
+    home: string;
+    group: string;
+    subsidiaries: string;
+    news: string;
+    contact: string;
+    explore: string;
+    menu: string;
+    close: string;
+    mainNav: string;
+    brand: string;
+    language: string;
+  }
+> = {
   fr: {
     home: "Accueil",
     group: "Le Groupe",
@@ -25,6 +41,7 @@ const labels = {
     close: "Fermer le menu",
     mainNav: "Navigation principale",
     brand: "Ramos Group — accueil",
+    language: "Langue",
   },
   en: {
     home: "Home",
@@ -37,6 +54,33 @@ const labels = {
     close: "Close menu",
     mainNav: "Main navigation",
     brand: "Ramos Group — home",
+    language: "Language",
+  },
+  de: {
+    home: "Startseite",
+    group: "Die Gruppe",
+    subsidiaries: "Tochtergesellschaften",
+    news: "Aktuelles",
+    contact: "Kontakt",
+    explore: "Entdecken",
+    menu: "Menü öffnen",
+    close: "Menü schließen",
+    mainNav: "Hauptnavigation",
+    brand: "Ramos Group — Startseite",
+    language: "Sprache",
+  },
+  it: {
+    home: "Home",
+    group: "Il Gruppo",
+    subsidiaries: "Filiali",
+    news: "Notizie",
+    contact: "Contatto",
+    explore: "Esplora",
+    menu: "Apri il menu",
+    close: "Chiudi il menu",
+    mainNav: "Navigazione principale",
+    brand: "Ramos Group — home",
+    language: "Lingua",
   },
 };
 
@@ -58,11 +102,70 @@ function MenuIcon({ open }: { open: boolean }) {
   );
 }
 
+function LanguageSwitcher({ locale }: { locale: Locale }) {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const current = localeMeta.find((l) => l.code === locale) || localeMeta[0];
+  const l = labels[locale];
+
+  useEffect(() => {
+    const onDoc = (e: MouseEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, []);
+
+  useEffect(() => setOpen(false), [pathname]);
+
+  return (
+    <div className="bouncy-nav-lang-wrap" ref={rootRef}>
+      <button
+        type="button"
+        className="bouncy-nav-lang"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label={l.language}
+        onClick={() => startTransition(() => setOpen((v) => !v))}
+      >
+        <Globe size={14} />
+        {current.short}
+        <ChevronDown size={12} aria-hidden />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.ul
+            className="bouncy-nav-lang-menu"
+            role="listbox"
+            aria-label={l.language}
+            initial={{ opacity: 0, y: -6, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.96 }}
+            transition={BOUNCE}
+          >
+            {localeMeta.map((item) => (
+              <li key={item.code} role="option" aria-selected={item.code === locale}>
+                <Link
+                  href={localePath(pathname, item.code)}
+                  className={item.code === locale ? "is-active" : undefined}
+                  hrefLang={item.code}
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const l = labels[locale];
-  const other = locale === "fr" ? "en" : "fr";
-  const switchPath = pathname.replace(/^\/(fr|en)/, `/${other}`);
 
   const links: { label: string; href: string }[] = [
     { label: l.home, href: `/${locale}` },
@@ -128,7 +231,7 @@ export function Header({ locale }: { locale: Locale }) {
     <header className={["bouncy-nav", scrolled ? "is-scrolled" : ""].filter(Boolean).join(" ")}>
       <nav className="bouncy-nav-bar" aria-label={l.mainNav}>
         <Link href={`/${locale}`} className="bouncy-nav-logo" aria-label={l.brand}>
-          <img src="/logo/LOGO RAMOS GROUP HD.png" alt="" />
+          <img src="/logo/LOGO RAMOS GROUP HD.png" alt="Ramos Group" />
         </Link>
 
         {!isMobile && (
@@ -176,14 +279,7 @@ export function Header({ locale }: { locale: Locale }) {
         )}
 
         <div className="bouncy-nav-right">
-          <Link
-            className="bouncy-nav-lang"
-            href={switchPath}
-            aria-label={locale === "fr" ? "Switch to English" : "Passer en français"}
-          >
-            <Globe size={14} />
-            {other.toUpperCase()}
-          </Link>
+          <LanguageSwitcher locale={locale} />
 
           {!isMobile && (
             <motion.div whileTap={{ scale: 0.95 }} transition={BOUNCE}>
@@ -240,6 +336,21 @@ export function Header({ locale }: { locale: Locale }) {
               </motion.div>
             ))}
             <div className="bouncy-nav-drawer-sep" />
+            <div className="bouncy-nav-drawer-langs" role="list" aria-label={l.language}>
+              {localeMeta.map((item) => (
+                <Link
+                  key={item.code}
+                  role="listitem"
+                  href={localePath(pathname, item.code)}
+                  className={["bouncy-nav-drawer-lang", item.code === locale ? "is-active" : ""]
+                    .filter(Boolean)
+                    .join(" ")}
+                  hrefLang={item.code}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -256,38 +367,72 @@ export function Header({ locale }: { locale: Locale }) {
   );
 }
 
+const footerCopy: Record<
+  Locale,
+  { tagline: string; nav: string; subsidiaries: string; ourSubsidiaries: string; language: string; motto: string }
+> = {
+  fr: {
+    tagline: "Construire des ponts entre héritage et progrès.",
+    nav: "Navigation",
+    subsidiaries: "Filiales",
+    ourSubsidiaries: "Nos filiales",
+    language: "Langue",
+    motto: "Une ambition algérienne, une portée mondiale.",
+  },
+  en: {
+    tagline: "Building bridges between heritage and progress.",
+    nav: "Navigation",
+    subsidiaries: "Subsidiaries",
+    ourSubsidiaries: "Subsidiaries",
+    language: "Language",
+    motto: "Algerian ambition, global reach.",
+  },
+  de: {
+    tagline: "Brücken zwischen Erbe und Fortschritt bauen.",
+    nav: "Navigation",
+    subsidiaries: "Tochtergesellschaften",
+    ourSubsidiaries: "Unsere Gesellschaften",
+    language: "Sprache",
+    motto: "Algerischer Anspruch, globale Reichweite.",
+  },
+  it: {
+    tagline: "Costruire ponti tra eredità e progresso.",
+    nav: "Navigazione",
+    subsidiaries: "Filiali",
+    ourSubsidiaries: "Le nostre filiali",
+    language: "Lingua",
+    motto: "Ambizione algerina, portata globale.",
+  },
+};
+
 export function Footer({ locale }: { locale: Locale }) {
-  const fr = locale === "fr";
+  const copy = footerCopy[locale];
   const pathname = usePathname();
-  const localeFreePath = pathname.replace(/^\/(fr|en)/, "");
+  const groupLabel = locale === "de" ? "Die Gruppe" : locale === "it" ? "Il Gruppo" : locale === "en" ? "The Group" : "Le Groupe";
+  const newsLabel = locale === "de" ? "Aktuelles" : locale === "it" ? "Notizie" : locale === "en" ? "News" : "Actualités";
 
   return (
     <footer className="footer">
       <div className="footer-intro">
-        <img src="/logo/ramos-bc-mark.png" alt="Ramos Group" />
-        <h2>
-          {fr
-            ? "Construire des ponts entre héritage et progrès."
-            : "Building bridges between heritage and progress."}
-        </h2>
+        <img src="/logo/LOGO RAMOS GROUP HD.png" alt="Ramos Group" />
+        <h2>{copy.tagline}</h2>
       </div>
 
       <div className="footer-grid">
         <div>
-          <span>Navigation</span>
-          <Link href={`/${locale}/a-propos`}>{fr ? "Le Groupe" : "The Group"}</Link>
-          <Link href={`/${locale}/filiales`}>{fr ? "Nos filiales" : "Subsidiaries"}</Link>
-          <Link href={`/${locale}/actualites`}>{fr ? "Actualités" : "News"}</Link>
+          <span>{copy.nav}</span>
+          <Link href={`/${locale}/a-propos`}>{groupLabel}</Link>
+          <Link href={`/${locale}/filiales`}>{copy.ourSubsidiaries}</Link>
+          <Link href={`/${locale}/actualites`}>{newsLabel}</Link>
           <Link href={`/${locale}/contact`}>Contact</Link>
         </div>
         <div>
-          <span>{fr ? "Filiales" : "Subsidiaries"}</span>
-          <Link href={`/${locale}/filiales/stone`}>Ramos Stone</Link>
-          <Link href={`/${locale}/filiales/construction`}>Ramos Construction</Link>
-          <Link href={`/${locale}/filiales/cargo`}>Ramos Cargo Logistics</Link>
-          <Link href={`/${locale}/filiales/cyber-control`}>Cyber-Control</Link>
-          <Link href={`/${locale}/filiales/icosium`}>Icosium Global</Link>
-          <Link href={`/${locale}/filiales/business-center`}>Business Center</Link>
+          <span>{copy.subsidiaries}</span>
+          {subsidiaries.map((item) => (
+            <Link key={item.slug} href={`/${locale}/filiales/${item.slug}`}>
+              {item.name}
+            </Link>
+          ))}
         </div>
         <div>
           <span>Contact</span>
@@ -295,19 +440,18 @@ export function Footer({ locale }: { locale: Locale }) {
           <p>Alger, Algérie</p>
         </div>
         <div>
-          <span>{fr ? "Langue" : "Language"}</span>
-          <Link href={`/fr${localeFreePath}`}>Français</Link>
-          <Link href={`/en${localeFreePath}`}>English</Link>
+          <span>{copy.language}</span>
+          {localeMeta.map((item) => (
+            <Link key={item.code} href={localePath(pathname, item.code)} hrefLang={item.code}>
+              {item.label}
+            </Link>
+          ))}
         </div>
       </div>
 
       <div className="footer-base">
         <p>© {new Date().getFullYear()} Ramos Group</p>
-        <p>
-          {fr
-            ? "Une ambition algérienne, une portée mondiale."
-            : "Algerian ambition, global reach."}
-        </p>
+        <p>{copy.motto}</p>
       </div>
     </footer>
   );

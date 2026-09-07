@@ -9,7 +9,8 @@
     "check": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "videos:compress": "node scripts/compress-videos.mjs"
   },
   "dependencies": {
     "framer-motion": "^13.0.0",
@@ -21,6 +22,7 @@
     "three": "^0.185.1"
   },
   "devDependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@netlify/plugin-nextjs": "^5.15.13",
     "@playwright/test": "^1.62.1",
     "@testing-library/jest-dom": "latest",
@@ -30,6 +32,7 @@
     "@types/react-dom": "latest",
     "@types/three": "^0.185.4",
     "@vitejs/plugin-react": "latest",
+    "fluent-ffmpeg": "^2.1.3",
     "jsdom": "latest",
     "typescript": "latest",
     "vitest": "latest"

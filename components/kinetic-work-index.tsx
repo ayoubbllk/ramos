@@ -29,6 +29,8 @@ export type KineticProject = {
   globeColor?: string;
   /** Invert near-black logos so marks stay readable on dark cards */
   logoInvert?: boolean;
+  /** Extra / reduced padding around logo marks (percent of frame) */
+  logoPadPct?: number;
 };
 
 type FontStyle = React.CSSProperties;
@@ -102,6 +104,7 @@ function ProjectImage({
   const image = getImage(project.image);
   const isLogo = imageFit === "contain";
   const invert = Boolean(project.logoInvert);
+  const pad = project.logoPadPct ?? (isLogo ? 10 : 0);
 
   return (
     <div
@@ -113,7 +116,7 @@ function ProjectImage({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: isLogo ? "10%" : 0,
+        padding: isLogo ? `${pad}%` : 0,
         background: "transparent",
       }}
     >

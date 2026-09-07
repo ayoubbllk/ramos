@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 type BentoGalleryProps = {
   images: string[];
   altPrefix?: string;
+  fitHints?: Record<string, "contain" | "cover">;
 };
 
 const SPAN_PATTERN = [
@@ -18,7 +19,7 @@ const SPAN_PATTERN = [
   { col: 1, row: 1 },
 ];
 
-export function BentoGallery({ images, altPrefix = "Photo" }: BentoGalleryProps) {
+export function BentoGallery({ images, altPrefix = "Photo", fitHints }: BentoGalleryProps) {
   const [lightbox, setLightbox] = useState<number | null>(null);
 
   const cells = useMemo(
@@ -49,7 +50,12 @@ export function BentoGallery({ images, altPrefix = "Photo" }: BentoGalleryProps)
             whileHover={{ scale: 1.01 }}
             aria-label={`${altPrefix} ${i + 1}`}
           >
-            <img src={cell.src} alt={`${altPrefix} ${i + 1}`} loading="lazy" />
+            <img
+              src={cell.src}
+              alt={`${altPrefix} ${i + 1}`}
+              loading="lazy"
+              className={fitHints?.[cell.src] === "contain" ? "media-fit-contain" : undefined}
+            />
           </motion.button>
         ))}
       </div>

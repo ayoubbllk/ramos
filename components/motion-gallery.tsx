@@ -6,9 +6,10 @@ import { motion } from "framer-motion";
 type MotionGalleryProps = {
   images: string[];
   altPrefix?: string;
+  fitHints?: Record<string, "contain" | "cover">;
 };
 
-export function MotionGallery({ images, altPrefix = "Photo" }: MotionGalleryProps) {
+export function MotionGallery({ images, altPrefix = "Photo", fitHints }: MotionGalleryProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
@@ -62,7 +63,13 @@ export function MotionGallery({ images, altPrefix = "Photo" }: MotionGalleryProp
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.5, delay: Math.min(i * 0.05, 0.35) }}
           >
-            <img src={src} alt={`${altPrefix} ${i + 1}`} loading="lazy" />
+            <img
+              src={src}
+              alt={`${altPrefix} ${i + 1}`}
+              loading="lazy"
+              className={fitHints?.[src] === "contain" ? "media-fit-contain" : undefined}
+              style={fitHints?.[src] === "contain" ? { objectFit: "contain", objectPosition: "center center" } : undefined}
+            />
           </motion.figure>
         ))}
       </div>

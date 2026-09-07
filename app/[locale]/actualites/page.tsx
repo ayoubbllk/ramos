@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Reveal } from "@/components/animations";
 import { BlogCard } from "@/components/blog-card";
 import { PageHeroTunnel } from "@/components/page-hero-tunnel";
-import { blogPosts } from "@/lib/blog";
+import { blogPosts, blogDateCard, blogTag, blogTitle } from "@/lib/blog";
 import type { Locale } from "@/lib/data";
 import { getTunnelImages } from "@/lib/tunnel-images";
 
@@ -36,9 +36,9 @@ export default async function News({ params }: { params: Promise<{ locale: Local
               mainImage={post.images[0]}
               hoverImage={post.images[1] || post.images[0]}
               author={post.author}
-              title={post.title[locale]}
-              tag={post.tag[locale]}
-              date={post.dateCard[locale]}
+              title={blogTitle(post, locale)}
+              tag={blogTag(post, locale)}
+              date={blogDateCard(post, locale)}
             />
           </Reveal>
         ))}

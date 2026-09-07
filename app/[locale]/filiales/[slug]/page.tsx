@@ -13,10 +13,10 @@ import { QuantumMorphingMatrix } from "@/components/quantum-morphing-matrix";
 import { SubsidiaryDocumentView } from "@/components/subsidiary-document";
 import { SubsidiaryOrbit } from "@/components/subsidiary-orbit";
 import { getSubsidiaryDocument } from "@/lib/content";
-import { getSubsidiary, subsidiaries, t, type Locale } from "@/lib/data";
+import { getSubsidiary, subsidiaries, staticLocales, t, type Locale } from "@/lib/data";
 
 export function generateStaticParams() {
-  return subsidiaries.flatMap((item) => ["fr", "en"].map((locale) => ({ locale, slug: item.slug })));
+  return subsidiaries.flatMap((item) => staticLocales.map((locale) => ({ locale, slug: item.slug })));
 }
 
 function splitImages(images: string[]) {
@@ -54,7 +54,7 @@ export default async function SubsidiaryPage({ params }: { params: Promise<{ loc
   return (
     <div className="subsidiary-page" style={accentStyle}>
       <section className="subsidiary-hero">
-        <HeroVideo src={item.video} locale={locale} />
+        <HeroVideo src={item.video} srcWeb={item.videoWeb} locale={locale} />
         <div className="subsidiary-hero-shade" aria-hidden="true" />
         <HeroTechFrame />
       </section>
@@ -183,7 +183,7 @@ export default async function SubsidiaryPage({ params }: { params: Promise<{ loc
                 <h2>{fr ? "Une lecture en mouvement." : "A moving perspective."}</h2>
               </Reveal>
             </div>
-            <MotionGallery images={galleries.motion} altPrefix={item.name} />
+            <MotionGallery images={galleries.motion} altPrefix={item.name} fitHints={item.imageFitHints} />
           </section>
 
           <section className="subsidiary-gallery-section subsidiary-gallery-wipe">
@@ -210,7 +210,7 @@ export default async function SubsidiaryPage({ params }: { params: Promise<{ loc
               </Reveal>
             </div>
             <div className="subsidiary-bento-wrap">
-              <BentoGallery images={galleries.bento} altPrefix={item.name} />
+              <BentoGallery images={galleries.bento} altPrefix={item.name} fitHints={item.imageFitHints} />
             </div>
           </section>
         </div>

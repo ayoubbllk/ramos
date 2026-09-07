@@ -457,9 +457,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 56px;
-  height: 56px;
-  padding: 0 12px 0 10px;
+  min-height: 84px;
+  height: 84px;
+  padding: 0 14px 0 12px;
+  overflow: visible;
   border-radius: 999px;
   background: rgba(18, 14, 28, 0.88);
   border: 1px solid rgba(248, 160, 64, 0.18);
@@ -480,14 +481,15 @@ button, a { -webkit-tap-highlight-color: transparent; }
   flex-shrink: 0;
   z-index: 2;
   text-decoration: none;
-  width: 100px;
-  height: 48px;
+  width: 168px;
+  height: 84px;
 }
 .bouncy-nav-logo img {
   display: block;
-  width: 100px;
-  height: 48px;
+  width: 168px;
+  height: 84px;
   object-fit: contain;
+  object-position: center center;
   filter: drop-shadow(0 0 14px rgba(248, 160, 64, 0.4));
 }
 .bouncy-nav-links {
@@ -539,14 +541,71 @@ button, a { -webkit-tap-highlight-color: transparent; }
   gap: 5px;
   min-height: 30px;
   padding: 0 8px;
+  border: none;
   border-radius: 999px;
   font: 500 11px var(--font-display);
   color: rgba(255, 255, 255, 0.75);
+  background: transparent;
+  cursor: pointer;
   transition: background 0.25s, color 0.25s;
 }
 .bouncy-nav-lang:hover {
   color: #fff;
   background: rgba(255, 255, 255, 0.08);
+}
+.bouncy-nav-lang-wrap {
+  position: relative;
+}
+.bouncy-nav-lang-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  min-width: 148px;
+  border-radius: 12px;
+  background: rgba(12, 8, 22, 0.96);
+  border: 1px solid rgba(248, 160, 64, 0.22);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+}
+.bouncy-nav-lang-menu a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: rgba(244, 238, 255, 0.78);
+  font: 500 13px var(--font-body);
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.bouncy-nav-lang-menu a:hover,
+.bouncy-nav-lang-menu a.is-active {
+  color: #fff;
+  background: rgba(248, 160, 64, 0.18);
+}
+.bouncy-nav-drawer-langs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.bouncy-nav-drawer-lang {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(248, 160, 64, 0.18);
+  color: rgba(244, 238, 255, 0.78);
+  font: 500 13px var(--font-body);
+  text-decoration: none;
+}
+.bouncy-nav-drawer-lang.is-active {
+  color: #0a0614;
+  background: var(--accent);
+  border-color: transparent;
 }
 .bouncy-nav-cta {
   display: inline-flex;
@@ -3995,6 +4054,20 @@ button, a { -webkit-tap-highlight-color: transparent; }
   object-fit: cover;
   transition: transform 0.6s var(--ease-out);
 }
+.mg-card img.media-fit-contain,
+.bg-cell img.media-fit-contain,
+.service-visual-media img.media-fit-contain,
+img.media-fit-contain {
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: #140f1c;
+}
+/* Ramos Stone — marble lion fully visible (not cropped by cover) */
+img[src*="DECOUPE%20ET%20SCULTURE/RAMOS%20STONE%20IMAGE%204"],
+img[src*="DECOUPE ET SCULTURE/RAMOS STONE IMAGE 4"] {
+  object-fit: contain !important;
+  object-position: center center !important;
+}
 .mg-card-active img { transform: scale(1.03); }
 .mg-dots {
   display: flex;
@@ -4636,13 +4709,19 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .footer-intro {
   display: grid;
-  grid-template-columns: 64px 1fr;
+  grid-template-columns: 140px 1fr;
   gap: 24px;
   align-items: center;
   padding-bottom: 48px;
   border-bottom: 1px solid rgba(248, 160, 64, 0.14);
 }
-.footer-intro img { width: 88px; height: 52px; object-fit: contain; filter: drop-shadow(0 0 14px rgba(248, 160, 64, 0.35)); }
+.footer-intro img {
+  width: 132px;
+  height: 132px;
+  object-fit: contain;
+  object-position: center center;
+  filter: drop-shadow(0 0 14px rgba(248, 160, 64, 0.35));
+}
 .footer-intro h2 {
   max-width: 600px;
   margin: 0;
@@ -4715,14 +4794,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
   }
   .bouncy-nav { padding-top: calc(8px + env(safe-area-inset-top, 0px)); }
   .bouncy-nav-bar {
-    min-height: 50px;
-    height: 50px;
+    min-height: 72px;
+    height: 72px;
     padding: 0 10px 0 8px;
   }
   .bouncy-nav-logo,
   .bouncy-nav-logo img {
-    width: 88px;
-    height: 42px;
+    width: 140px;
+    height: 70px;
   }
   .home-identity {
     min-height: 0;
@@ -4902,7 +4981,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .featured-story .story-copy { padding: 20px; }
   .footer { padding: 40px 20px calc(16px + env(safe-area-inset-bottom, 0px)); }
   .footer-intro { grid-template-columns: 44px 1fr; gap: 12px; }
-  .footer-intro img { width: 44px; height: 44px; }
+  .footer-intro {
+    grid-template-columns: 88px 1fr;
+    gap: 16px;
+  }
+  .footer-intro img { width: 88px; height: 88px; }
   .footer-intro h2 { font-size: clamp(18px, 5vw, 24px); }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
   .footer-base { flex-direction: column; gap: 4px; }

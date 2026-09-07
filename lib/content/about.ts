@@ -165,5 +165,7 @@ const en: AboutCopy = {
 };
 
 export function getAboutCopy(locale: Locale): AboutCopy {
-  return locale === "fr" ? fr : en;
+  if (locale === "fr") return fr;
+  // DE / IT use English until dedicated packs are authored
+  return en;
 }

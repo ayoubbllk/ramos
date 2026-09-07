@@ -1,7 +1,7 @@
 import { Reveal } from "@/components/animations";
 import { BlogCard } from "@/components/blog-card";
 import { SiteButton } from "@/components/site-button";
-import { blogPosts } from "@/lib/blog";
+import { blogPosts, blogDateCard, blogTag, blogTitle } from "@/lib/blog";
 import type { Locale } from "@/lib/data";
 
 export function HomeBlog({ locale }: { locale: Locale }) {
@@ -36,9 +36,9 @@ export function HomeBlog({ locale }: { locale: Locale }) {
               mainImage={post.images[0]}
               hoverImage={post.images[1] || post.images[0]}
               author={post.author}
-              title={post.title[locale]}
-              tag={post.tag[locale]}
-              date={post.dateCard[locale]}
+              title={blogTitle(post, locale)}
+              tag={blogTag(post, locale)}
+              date={blogDateCard(post, locale)}
             />
           </Reveal>
         ))}

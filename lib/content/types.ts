@@ -32,6 +32,7 @@ export type SubsidiaryDocument = {
 
 export function docT(value: DocText, locale: Locale): string {
   if (locale === "fr" && value.fr) return value.fr;
+  // DE / IT fall back to English source until translated packs are added
   return value.en;
 }
 
