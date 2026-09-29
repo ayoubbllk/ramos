@@ -118,7 +118,7 @@ export const subsidiaries: Subsidiary[] = [
       de: "Ramos Group vereint Industrie-, Immobilien-, Logistik- und Technologiekompetenz unter einer gemeinsamen Kultur der Exzellenz.",
       it: "Ramos Group unisce competenze industriali, immobiliari, logistiche e tecnologiche sotto una cultura comune di eccellenza.",
     },
-    video: "/hero/VIDEO PAGE D'ACCEUIL RAMOS GROUP.mp4",
+    video: "/hero/accueil.mp4",
     logo: "/logo/LOGO RAMOS GROUP HD.png",
     logoBg: "#0A0614",
     logoGlow: "#F8A040",

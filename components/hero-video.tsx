@@ -33,7 +33,9 @@ function playLabels(locale: Locale, playing: boolean) {
 export function HeroVideo({ src, srcWeb, poster, locale, priority = false }: HeroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
-  const sources = srcWeb && srcWeb !== src ? [srcWeb, src] : [src];
+  const sources = (srcWeb && srcWeb !== src ? [srcWeb, src] : [src]).map((path) => encodeURI(path));
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const activeSrc = sources[Math.min(sourceIndex, sources.length - 1)];
 
   useEffect(() => {
     const video = videoRef.current;
@@ -79,7 +81,7 @@ export function HeroVideo({ src, srcWeb, poster, locale, priority = false }: Her
       video.removeEventListener("canplay", onCanPlay);
       observer?.disconnect();
     };
-  }, [src, srcWeb, priority]);
+  }, [activeSrc, priority]);
 
   const toggle = () => {
     const video = videoRef.current;
@@ -95,15 +97,17 @@ export function HeroVideo({ src, srcWeb, poster, locale, priority = false }: Her
     <>
       <video
         ref={videoRef}
+        key={activeSrc}
         muted
         loop
         playsInline
         preload={priority ? "auto" : "metadata"}
         poster={poster}
+        onError={() => {
+          setSourceIndex((current) => (current + 1 < sources.length ? current + 1 : current));
+        }}
       >
-        {sources.map((s) => (
-          <source key={s} src={s} type="video/mp4" />
-        ))}
+        <source src={activeSrc} type="video/mp4" />
       </video>
       <button
         className="video-control"

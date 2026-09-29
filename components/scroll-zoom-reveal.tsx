@@ -87,7 +87,7 @@ export function ScrollZoomReveal({
               className="szr-video"
               style={{ opacity: 1 }}
             >
-              <source src={videoSrc} type="video/mp4" />
+              <source src={encodeURI(videoSrc)} type="video/mp4" />
             </video>
           )}
           {!isPlaying && videoSrc && (

@@ -13,8 +13,7 @@ import { GlobeSphere } from "@/components/globe-sphere";
 import { showcase, subsidiaries, sectorPanels, type Locale, t } from "@/lib/data";
 import { getTunnelImages } from "@/lib/tunnel-images";
 
-const HERO_SHOWREEL = "/hero/VIDEO PAGE D'ACCEUIL RAMOS GROUP.mp4";
-const HERO_SHOWREEL_WEB = "/hero/VIDEO PAGE D'ACCEUIL RAMOS GROUP.web.mp4";
+const HERO_SHOWREEL = "/hero/accueil.mp4";
 const FALLBACK_LOGO = "/logo/LOGO RAMOS GROUP HD.png";
 
 export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
@@ -27,7 +26,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       {/* ── HERO ── */}
       <section className="home-hero" aria-label={fr ? "Ramos Group" : "Ramos Group"}>
         <h1 className="sr-only">Ramos Group</h1>
-        <HeroVideo src={HERO_SHOWREEL} srcWeb={HERO_SHOWREEL_WEB} locale={locale} priority />
+        <HeroVideo src={HERO_SHOWREEL} locale={locale} priority />
         <div className="hero-shade" aria-hidden="true" />
         <HeroTechFrame />
       </section>
