@@ -223,10 +223,10 @@ export const subsidiaries: Subsidiary[] = [
     intro: { fr: "Une plateforme logistique pensée pour relier ports, entrepôts et marchés internationaux avec visibilité, fiabilité et maîtrise opérationnelle.", en: "A logistics platform connecting ports, warehouses and international markets with visibility, reliability and operational control.", de: "Eine Logistikplattform, die Häfen, Lager und internationale Märkte verbindet.", it: "Una piattaforma logistica pensata per collegare porti, magazzini e mercati internazionali." },
     video: "/ramos cargo/VIDEO PAGE LOGISTIC WEB.mp4",
     videoWeb: "/ramos cargo/VIDEO PAGE LOGISTIC.web.mp4",
-    logo: "/logo/logistique-cargo.png",
-    logoBg: "#FFF6F4",
+    logo: "/logo/cargo-logistic.png",
+    logoBg: "#FFFFFF",
     logoGlow: "#E52B32",
-    logoPad: 18,
+    logoTone: "light",
     images: cargo,
     services: [
       { fr: "Fret maritime et multimodal", en: "Ocean and multimodal freight" },
