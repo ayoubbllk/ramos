@@ -87,7 +87,8 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
             cardBackground: item.logoBg,
             globeColor: item.logoGlow || item.accent,
             logoInvert: item.logoInvert,
-            logoPadPct: item.slug === "cargo" ? 4 : item.logoPad ? Math.round((item.logoPad / 400) * 100) : undefined,
+            logoTone: item.logoTone,
+            logoPadPct: item.slug === "cargo" ? 2 : item.logoPad ? Math.round((item.logoPad / 400) * 100) : undefined,
           }))}
         />
       </section>

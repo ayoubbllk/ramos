@@ -6,7 +6,6 @@ describe("subsidiary content", () => {
     expect(subsidiaries.map((item) => item.slug)).toEqual([
       "ramos-group",
       "business-center",
-      "promotion-construction",
       "stone",
       "construction",
       "icosium",
@@ -21,7 +20,7 @@ describe("subsidiary content", () => {
     expect(getSubsidiary("cargo")?.name).toBe("Ramos Cargo Logistique");
     expect(getSubsidiary("cyber-control")?.name).toBe("Cyber Control");
     expect(getSubsidiary("ramos-group")?.name).toBe("Ramos Group");
-    expect(getSubsidiary("promotion-construction")?.name).toBe("Promotion Construction");
+    expect(subsidiaries.filter((item) => item.name === "Ramos Construction")).toHaveLength(1);
   });
 
   it("provides bilingual content and a hero video for every subsidiary", () => {
@@ -37,14 +36,16 @@ describe("subsidiary content", () => {
     expect(getSubsidiary("business-center")?.images).toHaveLength(34);
     expect(getSubsidiary("cyber-control")?.images).toHaveLength(4);
     expect(getSubsidiary("icosium")?.images).toHaveLength(13);
-    expect(getSubsidiary("stone")?.images).toHaveLength(32);
+    expect(getSubsidiary("stone")?.images).toHaveLength(37);
     expect(getSubsidiary("cargo")?.images).toHaveLength(6);
   });
 
   it("keeps the marble lion fully featured for Ramos Stone", () => {
-    const lion = getSubsidiary("stone")?.images[0];
-    expect(lion).toContain("DECOUPE ET SCULTURE/RAMOS STONE IMAGE 4");
+    const images = getSubsidiary("stone")?.images ?? [];
+    const lion = images.find((src) => src.includes("DECOUPE ET SCULTURE/RAMOS STONE IMAGE 4"));
+    expect(lion).toBeTruthy();
     expect(getSubsidiary("stone")?.imageFitHints?.[lion!]).toBe("contain");
+    expect(images[0]).toContain("PHOTO USINE RAMOS STONE");
   });
 
   it("returns undefined for an unknown subsidiary", () => {

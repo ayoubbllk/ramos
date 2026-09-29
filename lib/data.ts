@@ -24,6 +24,8 @@ export type Subsidiary = {
   logoInvert?: boolean;
   /** Extra padding around logo in carousels (px) — use when mark is tight in frame */
   logoPad?: number;
+  /** White marks need a dark plate; dark marks stay on the light ambient field */
+  logoTone?: "light" | "dark";
   /** object-fit override for specific gallery assets */
   imageFitHints?: Record<string, "contain" | "cover">;
   accent: string;
@@ -34,11 +36,6 @@ export type Subsidiary = {
 
 const center = [
   "IMG-20250804-WA0001 (1).jpg","IMG-20250804-WA0002 (1).jpg","IMG-20250804-WA0003 (2).jpg","IMG-20250804-WA0004 (1).jpg","IMG-20250804-WA0005 (1).jpg","IMG-20250804-WA0006 (1).jpg","IMG-20250804-WA0007 (1).jpg","IMG-20250804-WA0008 (1).jpg","IMG-20250804-WA0009 (1).jpg","IMG-20250804-WA0010 (1) (1).jpg","IMG-20250804-WA0010.jpg","IMG-20250804-WA0011 (1).jpg","IMG-20250804-WA0012 (1).jpg","IMG-20250804-WA0013 (1).jpg","IMG-20250804-WA0014.jpg","IMG-20250804-WA0016 (1).jpg","IMG-20250804-WA0017 (1).jpg","IMG-20250804-WA0018 (1).jpg","IMG-20250804-WA0019 (1).jpg","IMG-20250804-WA0021 (1).jpg","IMG-20250804-WA0022.jpg","IMG-20250804-WA0024.jpg","IMG-20250804-WA0025.jpg","PHOTO 00001 (1).jpeg","PHOTO 00002 (1).jpeg","PHOTO 00004 (1).jpeg","PHOTO 00005 (1).jpeg","PROMOTION  2.jpg","PROMOTION 1.jpg","PROMOTION 3.jpg","PROMOTION 4.jpg","PROMOTION 6.jpg","PROMOTION 7.jpg","PROMOTION5.jpg"
-].map((x) => `/center/${x}`);
-
-const promotion = [
-  "PROMOTION 1.jpg","PROMOTION 3.jpg","PROMOTION 4.jpg","PROMOTION 6.jpg","PROMOTION 7.jpg","PROMOTION5.jpg","PROMOTION  2.jpg",
-  "PHOTO 00001 (1).jpeg","PHOTO 00002 (1).jpeg","PHOTO 00004 (1).jpeg","PHOTO 00005 (1).jpeg",
 ].map((x) => `/center/${x}`);
 
 const cyber = ["CYBER C 10.png","CYBER C 11.png","CYBER C 12.png","CYBER C 16.png"].map((x) => `/cyber/${x}`);
@@ -68,7 +65,16 @@ const construction = [
 ].map((x) => `/construction/${x}`);
 
 const STONE_LION = "DECOUPE ET SCULTURE/RAMOS STONE IMAGE 4 (2).jpg";
+const stoneNew = [
+  "/PHOTO USINE RAMOS STONE  0003.png",
+  "/PHOTO USINE RAMOS STONE  0002.png",
+  "/PHOTO USINE RAMOS STONE  0001.png",
+  "/PHOTO CATALOGUE MARBRE RAMOS STONE 0001.png",
+  "/PHOTO CATALOGUE MARBRE RAMOS STONE.png",
+];
 const stone = [
+  ...stoneNew,
+  ...[
   // Lion marble first so it is featured and can be recentered via imageFitHints
   STONE_LION,
   "RAMOS STONE IMAGE 1 (3).jpg","RAMOS STONE IMAGE 2 (2).jpg","RAMOS STONE IMAGE 3 (2).jpg","RAMOS STONE IMAGE 4 (2).jpg","RAMOS STONE IMAGE 5 (1).jpg","RAMOS STONE IMAGE 6 (1).jpg","RAMOS STONE IMAGE 8 (1).jpg","RAMOS STONE IMG 7 (1).jpg",
@@ -76,7 +82,8 @@ const stone = [
   "panel/PANEL RAMOS STONE 1.PNG","panel/PANEL RAMOS STONE 2.PNG","panel/PANEL RAMOS STONE 3.PNG",
   "produit finis/RAMOS STONE IMG 10 (1).jpg","produit finis/RAMOS STONE IMG 2 (1).jpg","produit finis/RAMOS STONE IMG 3 (1).jpg","produit finis/RAMOS STONE IMG 4 (1).jpg","produit finis/RAMOS STONE IMG 5 (1).jpg","produit finis/RAMOS STONE IMG 6 (1).jpg","produit finis/RAMOS STONE IMG 8.jpg","produit finis/RAMOS STONE IMG 9 (1).jpg","produit finis/RAMOS STONE IMG.jpg",
   "stockage/RAMOS CARRIERE STONE 3 (1).png","stockage/RAMOS STONE 1 (1).jpg","stockage/RAMOS STONE 2 (1).jpg","stockage/RAMOS STONE 4 (1).jpg","stockage/RAMOS STONE STOCK  1 (1).jpg","stockage/RAMOS STONE STOCK 2 (1).jpg","stockage/RAMOS STONE STOCK 3 (1).jpg","stockage/RAMOS STONE STOCK 4.jpg"
-].map((x) => `/stone/${x}`);
+].map((x) => `/stone/${x}`),
+];
 
 const groupImages = [
   "/about/leadership-groupe.jpeg",
@@ -134,7 +141,7 @@ export const subsidiaries: Subsidiary[] = [
     intro: { fr: "Un hub dédié aux entrepreneurs et investisseurs, reliant l'immobilier, l'import-export, la sécurité des infrastructures critiques et les contrats internationaux.", en: "A hub for entrepreneurs and investors connecting real estate, import-export, critical infrastructure security and international joint contracts.", de: "Ein Hub für Unternehmer und Investoren, der Immobilien, Import-Export, kritische Infrastrukturen und internationale Verträge verbindet.", it: "Un hub per imprenditori e investitori che collega immobiliare, import-export, sicurezza delle infrastrutture critiche e contratti internazionali." },
     video: "/center/VIDEO RAMOS BUSINESS CENTER.mp4",
     videoWeb: "/center/VIDEO RAMOS BUSINESS CENTER.web.mp4",
-    logo: "/logo/ramos-bc-mark.png", logoBg: "#140F1F", logoGlow: "#F8A040", images: center,
+    logo: "/logo/center.png", logoBg: "#0A0A0A", logoGlow: "#F8A040", logoTone: "dark", images: center,
     services: [
       { fr: "Réseaux d'affaires et partenariats internationaux", en: "Business networks and international partnerships" },
       { fr: "Conseil juridique, fiscal et immobilier", en: "Legal, tax and real-estate advisory" },
@@ -144,48 +151,13 @@ export const subsidiaries: Subsidiary[] = [
     facts: [{ value: "4", label: { fr: "continents connectés", en: "connected continents" } }, { value: "360°", label: { fr: "accompagnement", en: "advisory" } }]
   },
   {
-    slug: "promotion-construction",
-    name: "Promotion Construction",
-    accent: "#d4a017",
-    sector: { fr: "Promotion immobilière", en: "Real-estate development", de: "Immobilienentwicklung", it: "Promozione immobiliare" },
-    tagline: {
-      fr: "Concevoir, promouvoir et livrer des projets d'envergure",
-      en: "Design, promote and deliver landmark projects",
-      de: "Großprojekte konzipieren, fördern und liefern",
-      it: "Progettare, promuovere e consegnare progetti di rilievo",
-    },
-    intro: {
-      fr: "Promotion Construction porte les projets immobiliers du Groupe : conception, promotion, commercialisation et accompagnement jusqu'à la livraison, en Algérie et à l'international.",
-      en: "Promotion Construction leads the Group's real-estate projects — design, promotion, marketing and delivery support across Algeria and internationally.",
-      de: "Promotion Construction führt die Immobilienprojekte der Gruppe — Konzeption, Promotion, Vermarktung und Begleitung bis zur Übergabe.",
-      it: "Promotion Construction guida i progetti immobiliari del Gruppo: progettazione, promozione, commercializzazione e consegna.",
-    },
-    video: "/construction/RAMOS CONSTRUCTION (1).mp4",
-    videoWeb: "/construction/RAMOS CONSTRUCTION.web.mp4",
-    logo: "/logo/construction.png",
-    logoBg: "#12100E",
-    logoGlow: "#D4A017",
-    logoInvert: true,
-    images: promotion,
-    services: [
-      { fr: "Études et montage de projets", en: "Project studies and structuring" },
-      { fr: "Promotion et commercialisation", en: "Promotion and marketing" },
-      { fr: "Suivi technique et livraison", en: "Technical follow-up and handover" },
-      { fr: "Partenariats investisseurs", en: "Investor partnerships" },
-    ],
-    facts: [
-      { value: "360°", label: { fr: "parcours projet", en: "project journey" } },
-      { value: "∞", label: { fr: "vision long terme", en: "long-term vision" } },
-    ],
-  },
-  {
     slug: "stone", name: "Ramos Stone", accent: "#b58c68",
     sector: { fr: "Pierre & architecture", en: "Stone & architecture", de: "Stein & Architektur", it: "Pietra e architettura" },
     tagline: { fr: "De la pierre brute au chef-d'œuvre architectural", en: "From Raw Stone to Architectural Masterpiece", de: "Vom Rohstein zum architektonischen Meisterwerk", it: "Dalla pietra grezza al capolavoro architettonico" },
     intro: { fr: "Une chaîne de valeur verticale, de la carrière au projet fini : sélection, découpe CNC, création sur mesure, finition et export vers plus de quinze pays.", en: "A vertical value chain from quarry to finished project: sourcing, CNC cutting, bespoke creation, finishing and export to more than fifteen countries.", de: "Eine vertikale Wertschöpfungskette vom Steinbruch zum fertigen Projekt.", it: "Una catena del valore verticale, dalla cava al progetto finito." },
     video: "/stone/VIDEO STONE (2).mp4",
     videoWeb: "/stone/VIDEO STONE.web.mp4",
-    logo: "/logo/stone.png", logoBg: "#0A0A0A", logoGlow: "#D4C4B0", images: stone,
+    logo: "/logo/stone.png", logoBg: "#0A0A0A", logoGlow: "#D4C4B0", logoTone: "dark", images: stone,
     imageFitHints: {
       [`/stone/${STONE_LION}`]: "contain",
     },

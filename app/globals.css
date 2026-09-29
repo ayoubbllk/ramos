@@ -457,8 +457,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 84px;
-  height: 84px;
+  min-height: 104px;
+  height: 104px;
   padding: 0 14px 0 12px;
   overflow: visible;
   border-radius: 999px;
@@ -480,14 +480,19 @@ button, a { -webkit-tap-highlight-color: transparent; }
   align-items: center;
   flex-shrink: 0;
   z-index: 2;
+  position: relative;
   text-decoration: none;
-  width: 168px;
-  height: 84px;
+  width: 210px;
+  height: 100%;
 }
 .bouncy-nav-logo img {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
   display: block;
-  width: 168px;
-  height: 84px;
+  width: 228px;
+  height: 140px;
   object-fit: contain;
   object-position: center center;
   filter: drop-shadow(0 0 14px rgba(248, 160, 64, 0.4));
@@ -4565,12 +4570,13 @@ img[src*="DECOUPE ET SCULTURE/RAMOS STONE IMAGE 4"] {
 .contact-details { margin-top: 36px; }
 .contact-details a, .contact-details p {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   margin: 12px 0;
-  font: 500 14px var(--font-body);
+  font: 500 14px/1.45 var(--font-body);
   transition: color 0.25s;
 }
+.contact-details svg { flex-shrink: 0; margin-top: 2px; }
 .contact-details a:hover { color: var(--accent); }
 .contact-form {
   position: relative;
@@ -4700,7 +4706,17 @@ img[src*="DECOUPE ET SCULTURE/RAMOS STONE IMAGE 4"] {
 .story-copy summary:hover { gap: 10px; }
 .story-copy details p { margin-top: 12px; line-height: 1.7; color: var(--slate); font-size: 14px; }
 
-/* ===== FOOTER ===== */
+.about-siege {
+  width: 100%;
+  background: #0a0614;
+}
+.about-siege img {
+  display: block;
+  width: 100%;
+  max-height: 82vh;
+  object-fit: cover;
+  object-position: center center;
+}
 .footer {
   padding: 72px var(--gutter) 28px;
   color: var(--ink);
@@ -4794,14 +4810,17 @@ img[src*="DECOUPE ET SCULTURE/RAMOS STONE IMAGE 4"] {
   }
   .bouncy-nav { padding-top: calc(8px + env(safe-area-inset-top, 0px)); }
   .bouncy-nav-bar {
-    min-height: 72px;
-    height: 72px;
+    min-height: 88px;
+    height: 88px;
     padding: 0 10px 0 8px;
   }
-  .bouncy-nav-logo,
+  .bouncy-nav-logo {
+    width: 148px;
+    height: 100%;
+  }
   .bouncy-nav-logo img {
-    width: 140px;
-    height: 70px;
+    width: 164px;
+    height: 104px;
   }
   .home-identity {
     min-height: 0;

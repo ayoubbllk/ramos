@@ -9,8 +9,7 @@ import {
   useReducedMotion,
   useSpring,
 } from "framer-motion";
-import { GlobeSphere } from "@/components/globe-sphere";
-import { ChromaLogo } from "@/components/chroma-logo";
+import { AmbientBackground } from "@/components/ambient-background";
 
 type ResponsiveImage = {
   src?: string;
@@ -31,6 +30,8 @@ export type KineticProject = {
   logoInvert?: boolean;
   /** Extra / reduced padding around logo marks (percent of frame) */
   logoPadPct?: number;
+  /** Dark plate for white logos, light plate for dark logos */
+  logoTone?: "light" | "dark";
 };
 
 type FontStyle = React.CSSProperties;
@@ -103,8 +104,7 @@ function ProjectImage({
 }) {
   const image = getImage(project.image);
   const isLogo = imageFit === "contain";
-  const invert = Boolean(project.logoInvert);
-  const pad = project.logoPadPct ?? (isLogo ? 10 : 0);
+  const pad = project.logoPadPct ?? (isLogo ? 4 : 0);
 
   return (
     <div
@@ -121,54 +121,27 @@ function ProjectImage({
       }}
     >
       {isLogo ? (
-        invert ? (
-          <img
-            src={image.src}
-            alt={image.alt || project.title || "Project image"}
-            className="kwi-logo-img"
-            draggable={false}
-            loading="eager"
-            style={{
-              position: "relative",
-              zIndex: 1,
-              width: "auto",
-              height: "auto",
-              maxWidth: "100%",
-              maxHeight: "100%",
-              display: "block",
-              margin: "0 auto",
-              objectFit: imageFit,
-              objectPosition: "center center",
-              userSelect: "none",
-              pointerEvents: "none",
-              /* Black-on-black assets → clean white mark, no chroma artifacts */
-              filter: "brightness(0) invert(1)",
-            }}
-          />
-        ) : (
-          <ChromaLogo
-            src={image.src}
-            alt={image.alt || project.title || "Project image"}
-            className="kwi-logo-img"
-            tolerance={14}
-            liftDarkInk
-            inkStrength={0.95}
-            style={{
-              position: "relative",
-              zIndex: 1,
-              width: "auto",
-              height: "auto",
-              maxWidth: "100%",
-              maxHeight: "100%",
-              display: "block",
-              margin: "0 auto",
-              objectFit: imageFit,
-              objectPosition: "center center",
-              userSelect: "none",
-              pointerEvents: "none",
-            }}
-          />
-        )
+        <img
+          src={image.src}
+          alt={image.alt || project.title || "Project image"}
+          className="kwi-logo-img"
+          draggable={false}
+          loading="eager"
+          style={{
+            position: "relative",
+            zIndex: 2,
+            width: "auto",
+            height: "auto",
+            maxWidth: "100%",
+            maxHeight: "100%",
+            display: "block",
+            margin: "0 auto",
+            objectFit: "contain",
+            objectPosition: "center center",
+            userSelect: "none",
+            pointerEvents: "none",
+          }}
+        />
       ) : (
         <img
           src={image.src}
@@ -274,16 +247,7 @@ function InteractiveProjectCard({
   const [isHovered, setIsHovered] = React.useState(false);
   const cardBackground =
     project.cardBackground || (imageFit === "contain" ? "#0A0614" : lineColor);
-  const globeColor = project.globeColor || "#F8A040";
   const isLogoCard = imageFit === "contain";
-  const lightCard = (() => {
-    const hex = cardBackground.replace("#", "");
-    if (hex.length < 6) return false;
-    const r = parseInt(hex.slice(0, 2), 16);
-    const g = parseInt(hex.slice(2, 4), 16);
-    const b = parseInt(hex.slice(4, 6), 16);
-    return 0.2126 * r + 0.7152 * g + 0.0722 * b > 180;
-  })();
 
   const rotateXTarget = useMotionValue(0);
   const rotateYTarget = useMotionValue(0);
@@ -436,7 +400,7 @@ function InteractiveProjectCard({
             transformPerspective: clamp(hoverPerspective, 400, 3000),
             overflow: "hidden",
             borderRadius: radius,
-            background: cardBackground,
+            background: isLogoCard ? (project.logoTone === "dark" ? "#0B0A12" : "#ffffff") : cardBackground,
             boxShadow: isHovered
               ? "0 52px 120px rgba(0,0,0,0.45), 0 18px 42px rgba(248,160,64,0.18)"
               : "0 30px 90px rgba(0,0,0,0.28)",
@@ -455,7 +419,7 @@ function InteractiveProjectCard({
             ["--kwi-holo-y" as string]: "50%",
           }}
         >
-          {imageFit === "contain" && (
+          {isLogoCard && (
             <div
               aria-hidden="true"
               style={{
@@ -465,23 +429,9 @@ function InteractiveProjectCard({
                 pointerEvents: "none",
                 borderRadius: "inherit",
                 overflow: "hidden",
-                background: cardBackground,
               }}
             >
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  opacity: lightCard ? 0.28 : 1,
-                }}
-              >
-                <GlobeSphere
-                  globeColor={globeColor}
-                  particleCount={360}
-                  speed={0.85}
-                  radiusRatio={0.4}
-                />
-              </div>
+              <AmbientBackground tone={project.logoTone === "dark" ? "dark" : "light"} />
             </div>
           )}
           <AnimatePresence initial={false} mode="popLayout">
@@ -546,7 +496,10 @@ function InteractiveProjectCard({
                   textDecoration: "none",
                 }}
               >
-                <ProjectImage project={project} imageFit={imageFit} />
+                <ProjectImage
+                  project={isLogoCard ? { ...project, logoInvert: false } : project}
+                  imageFit={imageFit}
+                />
               </ProjectLink>
             </motion.div>
           </AnimatePresence>

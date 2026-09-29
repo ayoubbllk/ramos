@@ -437,7 +437,10 @@ export function Footer({ locale }: { locale: Locale }) {
         <div>
           <span>Contact</span>
           <a href="mailto:contact@ramos-group.com">contact@ramos-group.com</a>
-          <p>Alger, Algérie</p>
+          <a href="tel:+213783202064">+213 783 20 20 64</a>
+          <a href="tel:+213783242623">+213 783 24 26 23</a>
+          <p>Rue Issat Idir, Villa N° 35, Chéraga, Algérie</p>
+          <p>Rue Résidence Immar, Djenan Sfari, Gue de Constantine, Alger</p>
         </div>
         <div>
           <span>{copy.language}</span>

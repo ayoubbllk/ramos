@@ -20,6 +20,10 @@ export default async function About({ params }: { params: Promise<{ locale: Loca
         </Reveal>
       </PageHeroTunnel>
 
+      <section className="about-siege" aria-label={locale === "fr" ? "Siège Ramos Group" : "Ramos Group headquarters"}>
+        <img src="/PHOTO SIEGE RAMOS GROUP 0004.png" alt={locale === "fr" ? "Siège social Ramos Group" : "Ramos Group headquarters"} />
+      </section>
+
       {/* Section 1 — DG portrait studio */}
       <section className="about-dg about-dg--portrait" aria-labelledby="about-management-title">
         <Reveal direction="left" className="about-dg-media">

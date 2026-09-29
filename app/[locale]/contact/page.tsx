@@ -1,6 +1,6 @@
 "use client";
 
-import { Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { use, useState, type FormEvent } from "react";
 import { Reveal } from "@/components/animations";
 import { HeroTechFrame } from "@/components/hero-tech-frame";
@@ -105,7 +105,10 @@ export default function Contact({ params }: { params: Promise<{ locale: Locale }
         <Reveal delay={400}>
           <div className="contact-details">
             <a href="mailto:contact@ramos-group.com"><Mail size={18} />contact@ramos-group.com</a>
-            <p><MapPin size={18} />Alger, Algérie</p>
+            <a href="tel:+213783202064"><Phone size={18} />+213 783 20 20 64</a>
+            <a href="tel:+213783242623"><Phone size={18} />+213 783 24 26 23</a>
+            <p><MapPin size={18} />Rue Issat Idir, Villa N° 35, Chéraga, Algérie</p>
+            <p><MapPin size={18} />Rue Résidence Immar, Djenan Sfari, Gue de Constantine, Alger</p>
           </div>
         </Reveal>
       </div>
