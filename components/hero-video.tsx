@@ -54,7 +54,6 @@ export function HeroVideo({ src, srcWeb, poster, locale, priority = false }: Her
 
     if (priority) {
       video.preload = "auto";
-      video.load();
       tryPlay();
     } else {
       video.preload = "metadata";
@@ -97,7 +96,8 @@ export function HeroVideo({ src, srcWeb, poster, locale, priority = false }: Her
     <>
       <video
         ref={videoRef}
-        key={activeSrc}
+        src={activeSrc}
+        autoPlay
         muted
         loop
         playsInline
@@ -106,9 +106,7 @@ export function HeroVideo({ src, srcWeb, poster, locale, priority = false }: Her
         onError={() => {
           setSourceIndex((current) => (current + 1 < sources.length ? current + 1 : current));
         }}
-      >
-        <source src={activeSrc} type="video/mp4" />
-      </video>
+      />
       <button
         className="video-control"
         type="button"
